@@ -1,3 +1,4 @@
+<!-- โค้ด index.html แก้ไขใหม่เพื่อให้โหมด Random ทำงานได้สมบูรณ์ -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -98,32 +99,32 @@
   // ตัวอย่างเมนูจากหมู (30 เมนู)
   { name: 'หมูทอดกระเทียม', ingredients: ['หมู', 'กระเทียม', 'น้ำปลา'], category: 'ทอด' },
   { name: 'แกงจืดเต้าหู้หมูสับ', ingredients: ['หมูสับ', 'เต้าหู้', 'ผักกาดขาว'], category: 'ต้ม' },
-  { name: 'หมูผัดพริกแกง', ingredients: ['หมู', 'พริกแกงแดง', 'ถั่วฝักยาว'], image: 'https://www.example.com/moopadprikgaeng.jpg', category: 'ผัด' },
-  { name: 'หมูกระเทียมไข่ดาว', ingredients: ['หมู', 'กระเทียม', 'ไข่'], image: 'https://www.example.com/mookai.jpg', category: 'ทอด' },
-  { name: 'ลาบหมู', ingredients: ['หมูสับ', 'ข้าวคั่ว', 'พริกป่น'], image: 'https://www.example.com/laabmoo.jpg', category: 'ยำ' },
-  { name: 'หมูกรอบคะน้าน้ำมันหอย', ingredients: ['หมูสามชั้น', 'คะน้า', 'ซอสหอยนางรม'], image: 'https://www.example.com/krabkanaa.jpg', category: 'ผัด' },
-  { name: 'หมูสับผัดไข่เค็ม', ingredients: ['หมูสับ', 'ไข่เค็ม', 'ต้นหอม'], image: 'https://www.example.com/moosubkai.jpg', category: 'ผัด' },
-  { name: 'หมูตุ๋นมะระ', ingredients: ['หมู', 'มะระ', 'น้ำปลา'], image: 'https://www.example.com/maratun.jpg', category: 'ต้ม' },
-  { name: 'หมูทอดน้ำปลา', ingredients: ['หมู', 'น้ำปลา'], image: 'https://www.example.com/moonampla.jpg', category: 'ทอด' },
-  { name: 'หมูผัดขิง', ingredients: ['หมู', 'ขิง', 'ต้นหอม'], image: 'https://www.example.com/moopadkhing.jpg', category: 'ผัด' },
+  { name: 'หมูผัดพริกแกง', ingredients: ['หมู', 'พริกแกงแดง', 'ถั่วฝักยาว'], category: 'ผัด' },
+  { name: 'หมูกระเทียมไข่ดาว', ingredients: ['หมู', 'กระเทียม', 'ไข่'], category: 'ทอด' },
+  { name: 'ลาบหมู', ingredients: ['หมูสับ', 'ข้าวคั่ว', 'พริกป่น'], category: 'ยำ' },
+  { name: 'หมูกรอบคะน้าน้ำมันหอย', ingredients: ['หมูสามชั้น', 'คะน้า', 'ซอสหอยนางรม'], category: 'ผัด' },
+  { name: 'หมูสับผัดไข่เค็ม', ingredients: ['หมูสับ', 'ไข่เค็ม', 'ต้นหอม'], category: 'ผัด' },
+  { name: 'หมูตุ๋นมะระ', ingredients: ['หมู', 'มะระ', 'น้ำปลา'], category: 'ต้ม' },
+  { name: 'หมูทอดน้ำปลา', ingredients: ['หมู', 'น้ำปลา'], category: 'ทอด' },
+  { name: 'หมูผัดขิง', ingredients: ['หมู', 'ขิง', 'ต้นหอม'], category: 'ผัด' },
   // เพิ่มเมนูจากหมูอีก 20 รายการ ...
 
   // ตัวอย่างเมนูจากไก่ (30 เมนู)
-  { name: 'ไก่ทอดหาดใหญ่', ingredients: ['ไก่', 'กระเทียม', 'แป้งทอด'], image: 'https://www.example.com/haadyai.jpg', category: 'ทอด' },
-  { name: 'ต้มข่าไก่', ingredients: ['ไก่', 'ข่า', 'ตะไคร้', 'กะทิ'], image: 'https://www.example.com/tomkha.jpg', category: 'ต้ม' },
-  { name: 'ผัดพริกแกงไก่ถั่วฝักยาว', ingredients: ['ไก่', 'พริกแกง', 'ถั่วฝักยาว'], image: 'https://www.example.com/kaipadprikgaeng.jpg', category: 'ผัด' },
-  { name: 'ไก่อบซอส', ingredients: ['ไก่', 'ซอสหอยนางรม', 'พริกไทย'], image: 'https://www.example.com/kaiaob.jpg', category: 'อบ' },
+  { name: 'ไก่ทอดหาดใหญ่', ingredients: ['ไก่', 'กระเทียม', 'แป้งทอด'], category: 'ทอด' },
+  { name: 'ต้มข่าไก่', ingredients: ['ไก่', 'ข่า', 'ตะไคร้', 'กะทิ'], category: 'ต้ม' },
+  { name: 'ผัดพริกแกงไก่ถั่วฝักยาว', ingredients: ['ไก่', 'พริกแกง', 'ถั่วฝักยาว'], category: 'ผัด' },
+  { name: 'ไก่อบซอส', ingredients: ['ไก่', 'ซอสหอยนางรม', 'พริกไทย'], category: 'อบ' },
   // เพิ่มเมนูจากไก่ อีก 26 รายการ ...
 
   // ตัวอย่างเมนูจากปลาแซลมอน (30 เมนู)
-  { name: 'ปลาแซลมอนย่างซีอิ๊ว', ingredients: ['ปลาแซลมอน', 'ซีอิ๊วขาว', 'กระเทียม'], image: 'https://img.wongnai.com/p/1920x0/2021/09/25/d014dbb8ea584839b1795bde8d2efbfa.jpg', category: 'ย่าง' },
-  { name: 'สเต๊กปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'น้ำมันมะกอก', 'เกลือ'], image: 'https://img.kapook.com/u/2021/surauch/cook1/salmonsteak1.jpg', category: 'ย่าง' },
-  { name: 'ยำปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'พริก', 'หอมแดง', 'มะนาว'], image: 'https://img.wongnai.com/p/400x0/2020/02/14/4c190887205b4b0882305b1c9c1313df.jpg', category: 'ยำ' },
-  { name: 'ข้าวหน้าปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'ข้าว', 'ซอสเทอริยากิ'], image: 'https://www.example.com/salmonrice.jpg', category: 'อาหารจานเดียว' },
+  { name: 'ปลาแซลมอนย่างซีอิ๊ว', ingredients: ['ปลาแซลมอน', 'ซีอิ๊วขาว', 'กระเทียม'], category: 'ย่าง' },
+  { name: 'สเต๊กปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'น้ำมันมะกอก', 'เกลือ'], category: 'ย่าง' },
+  { name: 'ยำปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'พริก', 'หอมแดง', 'มะนาว'], category: 'ยำ' },
+  { name: 'ข้าวหน้าปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'ข้าว', 'ซอสเทอริยากิ'], category: 'อาหารจานเดียว' },
   // เพิ่มเมนูจากปลาแซลมอน อีก 26 รายการ ...
-,, ingredients: ['ปลาแซลมอน', 'น้ำมันมะกอก', 'เกลือ'], image: 'https://img.kapook.com/u/2021/surauch/cook1/salmonsteak1.jpg', category: 'ย่าง' },
-      { name: 'ยำปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'พริก', 'หอมแดง', 'มะนาว'], image: 'https://img.wongnai.com/p/400x0/2020/02/14/4c190887205b4b0882305b1c9c1313df.jpg', category: 'ยำ' },
-      { name: 'ปลาดอลลี่นึ่งมะนาว', ingredients: ['ปลาดอลลี่', 'มะนาว', 'พริก', 'กระเทียม'], image: 'https://food.mthai.com/app/uploads/2016/03/pla-dory-neung-manao-600x400.jpg', category: 'นึ่ง' }
+{ name: 'เมนูไม่สมบูรณ์', ingredients: ['ปลาแซลมอน', 'น้ำมันมะกอก', 'เกลือ'], category: 'ย่าง' },
+      { name: 'ยำปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'พริก', 'หอมแดง', 'มะนาว'], category: 'ยำ' },
+      { name: 'ปลาดอลลี่นึ่งมะนาว', ingredients: ['ปลาดอลลี่', 'มะนาว', 'พริก', 'กระเทียม'], category: 'นึ่ง' }
     ];
 
     function addIngredientInput(value = '') {
@@ -194,7 +195,7 @@
 
       document.getElementById('recipe-text').innerHTML = `<strong>${choice}</strong>`;
             document.getElementById('recipe-category').innerHTML = selected?.category ? `<p style='color: #90caf9;'>หมวดหมู่: ${selected.category}</p>` : '';
-      document.getElementById('level-up-sound').play();'>หมวดหมู่: ${selected.category}</p>` : '';
+      document.getElementById('level-up-sound').play();
       resultBox.classList.remove('hidden');
     }
 
