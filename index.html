@@ -93,9 +93,18 @@
       thai: ['ผัดกะเพรา', 'แกงเขียวหวาน', 'ต้มยำกุ้ง', 'ข้าวมันไก่', 'ข้าวขาหมู'],
       japanese: ['ซูชิ', 'ราเมน', 'ข้าวหน้าเนื้อ', 'เทมปุระ', 'ทงคัตสึ'],
       fastfood: ['เบอร์เกอร์', 'เฟรนช์ฟรายส์', 'ไก่ทอด', 'พิซซ่า', 'แซนด์วิช'],
-      all: [] // will be filled below
+      all: []
     };
     menus.all = [...menus.thai, ...menus.japanese, ...menus.fastfood];
+
+    const recipeDatabase = [
+      { name: 'กระเพราหมูสับ ไข่ดาว', ingredients: ['หมู', 'ใบกระเพรา', 'ไข่'] },
+      { name: 'หมูทอดกระเทียม', ingredients: ['หมู', 'กระเทียม'] },
+      { name: 'ไข่เจียวหมูสับ', ingredients: ['ไข่', 'หมู'] },
+      { name: 'ไข่เจียว', ingredients: ['ไข่'] },
+      { name: 'หมูผัดน้ำมันหอย', ingredients: ['หมู', 'น้ำมันหอย'] },
+      { name: 'ข้าวผัดไข่', ingredients: ['ไข่', 'ข้าว'] }
+    ];
 
     methodSelect.addEventListener('change', () => {
       const method = methodSelect.value;
@@ -118,9 +127,21 @@
       if (method === 'cook') {
         const ingredients = Array.from(document.querySelectorAll('#ingredient-inputs input'))
           .map(i => i.value.trim()).filter(Boolean);
-        choice = ingredients.length
-          ? `เมนูจาก: ${ingredients.join(', ')}`
-          : 'ลองใส่วัตถุดิบดูหน่อย!';
+
+        if (ingredients.length === 0) {
+          choice = 'ลองใส่วัตถุดิบดูหน่อย!';
+        } else {
+          const matches = recipeDatabase.filter(recipe =>
+            recipe.ingredients.some(ing => ingredients.includes(ing))
+          );
+
+          if (matches.length > 0) {
+            const randomRecipe = matches[Math.floor(Math.random() * matches.length)];
+            choice = `ทำเมนู: ${randomRecipe.name}`;
+          } else {
+            choice = 'ยังไม่มีเมนูที่ตรงกับวัตถุดิบที่กรอก 😥';
+          }
+        }
       } else if (method === 'buy') {
         const type = document.getElementById('food-type').value;
         if (menus[type]) {
