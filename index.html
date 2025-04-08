@@ -1,4 +1,3 @@
-<!-- โค้ด index.html แก้ไขใหม่เพื่อให้โหมด Random ทำงานได้สมบูรณ์ -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -83,7 +82,6 @@
   <button onclick="findFood()">สุ่มอาหาร!</button>
   <div id="result" class="random-box hidden">
     <div id="recipe-text"></div>
-    
     <div id="recipe-category"></div>
   </div>
 
@@ -92,39 +90,17 @@
     const ingredientSection = document.getElementById('ingredient-section');
     const foodtypeSection = document.getElementById('foodtype-section');
     const resultBox = document.getElementById('result');
-
     const ingredientInputs = document.getElementById('ingredient-inputs');
 
     const recipeDatabase = [
-  // ตัวอย่างเมนูจากหมู (30 เมนู)
-  { name: 'หมูทอดกระเทียม', ingredients: ['หมู', 'กระเทียม', 'น้ำปลา'], category: 'ทอด' },
-  { name: 'แกงจืดเต้าหู้หมูสับ', ingredients: ['หมูสับ', 'เต้าหู้', 'ผักกาดขาว'], category: 'ต้ม' },
-  { name: 'หมูผัดพริกแกง', ingredients: ['หมู', 'พริกแกงแดง', 'ถั่วฝักยาว'], category: 'ผัด' },
-  { name: 'หมูกระเทียมไข่ดาว', ingredients: ['หมู', 'กระเทียม', 'ไข่'], category: 'ทอด' },
-  { name: 'ลาบหมู', ingredients: ['หมูสับ', 'ข้าวคั่ว', 'พริกป่น'], category: 'ยำ' },
-  { name: 'หมูกรอบคะน้าน้ำมันหอย', ingredients: ['หมูสามชั้น', 'คะน้า', 'ซอสหอยนางรม'], category: 'ผัด' },
-  { name: 'หมูสับผัดไข่เค็ม', ingredients: ['หมูสับ', 'ไข่เค็ม', 'ต้นหอม'], category: 'ผัด' },
-  { name: 'หมูตุ๋นมะระ', ingredients: ['หมู', 'มะระ', 'น้ำปลา'], category: 'ต้ม' },
-  { name: 'หมูทอดน้ำปลา', ingredients: ['หมู', 'น้ำปลา'], category: 'ทอด' },
-  { name: 'หมูผัดขิง', ingredients: ['หมู', 'ขิง', 'ต้นหอม'], category: 'ผัด' },
-  // เพิ่มเมนูจากหมูอีก 20 รายการ ...
-
-  // ตัวอย่างเมนูจากไก่ (30 เมนู)
-  { name: 'ไก่ทอดหาดใหญ่', ingredients: ['ไก่', 'กระเทียม', 'แป้งทอด'], category: 'ทอด' },
-  { name: 'ต้มข่าไก่', ingredients: ['ไก่', 'ข่า', 'ตะไคร้', 'กะทิ'], category: 'ต้ม' },
-  { name: 'ผัดพริกแกงไก่ถั่วฝักยาว', ingredients: ['ไก่', 'พริกแกง', 'ถั่วฝักยาว'], category: 'ผัด' },
-  { name: 'ไก่อบซอส', ingredients: ['ไก่', 'ซอสหอยนางรม', 'พริกไทย'], category: 'อบ' },
-  // เพิ่มเมนูจากไก่ อีก 26 รายการ ...
-
-  // ตัวอย่างเมนูจากปลาแซลมอน (30 เมนู)
-  { name: 'ปลาแซลมอนย่างซีอิ๊ว', ingredients: ['ปลาแซลมอน', 'ซีอิ๊วขาว', 'กระเทียม'], category: 'ย่าง' },
-  { name: 'สเต๊กปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'น้ำมันมะกอก', 'เกลือ'], category: 'ย่าง' },
-  { name: 'ยำปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'พริก', 'หอมแดง', 'มะนาว'], category: 'ยำ' },
-  { name: 'ข้าวหน้าปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'ข้าว', 'ซอสเทอริยากิ'], category: 'อาหารจานเดียว' },
-  // เพิ่มเมนูจากปลาแซลมอน อีก 26 รายการ ...
-{ name: 'เมนูไม่สมบูรณ์', ingredients: ['ปลาแซลมอน', 'น้ำมันมะกอก', 'เกลือ'], category: 'ย่าง' },
-      { name: 'ยำปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'พริก', 'หอมแดง', 'มะนาว'], category: 'ยำ' },
-      { name: 'ปลาดอลลี่นึ่งมะนาว', ingredients: ['ปลาดอลลี่', 'มะนาว', 'พริก', 'กระเทียม'], category: 'นึ่ง' }
+      { name: 'หมูทอดกระเทียม', ingredients: ['หมู', 'กระเทียม', 'น้ำปลา'], category: 'ทอด' },
+      { name: 'ลาบหมู', ingredients: ['หมูสับ', 'ข้าวคั่ว', 'พริกป่น'], category: 'ยำ' },
+      { name: 'ต้มข่าไก่', ingredients: ['ไก่', 'ข่า', 'ตะไคร้', 'กะทิ'], category: 'ต้ม' },
+      { name: 'หมูกรอบคะน้าน้ำมันหอย', ingredients: ['หมูสามชั้น', 'คะน้า', 'ซอสหอยนางรม'], category: 'ผัด' },
+      { name: 'ข้าวหน้าปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'ข้าว', 'ซอสเทอริยากิ'], category: 'อาหารญี่ปุ่น' },
+      { name: 'สเต๊กปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'น้ำมันมะกอก', 'เกลือ'], category: 'อาหารญี่ปุ่น' },
+      { name: 'ไก่อบซอส', ingredients: ['ไก่', 'ซอสหอยนางรม', 'พริกไทย'], category: 'ฟาสต์ฟู้ด' },
+      { name: 'หมูกระเทียมไข่ดาว', ingredients: ['หมู', 'กระเทียม', 'ไข่'], category: 'ฟาสต์ฟู้ด' }
     ];
 
     function addIngredientInput(value = '') {
@@ -148,7 +124,7 @@
       const value = input.value.toLowerCase();
       suggBox.innerHTML = '';
       if (!value) return;
-      const matches = ['ปลาแซลมอน', 'ปลาดอลลี่', 'ซีอิ๊วขาว', 'กระเทียม', 'เกลือ', 'น้ำมันมะกอก', 'พริก', 'หอมแดง', 'มะนาว'].filter(item => item.toLowerCase().includes(value));
+      const matches = ['หมู', 'ไก่', 'ปลาแซลมอน', 'ปลาดอลลี่', 'ซีอิ๊วขาว', 'กระเทียม', 'เกลือ', 'น้ำมันมะกอก', 'พริก', 'หอมแดง', 'มะนาว', 'ต้นหอม', 'ข่า', 'ตะไคร้', 'ฟักทอง', 'กะทิ', 'ไข่', 'ขิง', 'ข้าว', 'พริกไทย', 'ผักกาดขาว', 'ไข่เค็ม', 'ถั่วฝักยาว', 'แป้งทอด', 'น้ำปลา', 'พริกแกงแดง', 'ซอสหอยนางรม'].filter(item => item.toLowerCase().includes(value));
       matches.forEach(match => {
         const div = document.createElement('div');
         div.textContent = match;
@@ -174,9 +150,9 @@
 
       if (method === 'cook') {
         const scoredRecipes = recipeDatabase.map(r => {
-  const matched = r.ingredients.filter(i => ingredients.some(input => i.includes(input) || input.includes(i))).length;
-  return { ...r, score: matched / r.ingredients.length };
-}).filter(r => r.score >= 0.5);
+          const matched = r.ingredients.filter(i => ingredients.some(input => i.includes(input) || input.includes(i))).length;
+          return { ...r, score: matched / r.ingredients.length };
+        }).filter(r => r.score >= 0.5);
 
         if (scoredRecipes.length > 0) {
           const bestMatches = scoredRecipes.filter(r => r.score === Math.max(...scoredRecipes.map(m => m.score)));
@@ -189,12 +165,27 @@
       } else if (method === 'random') {
         selected = recipeDatabase[Math.floor(Math.random() * recipeDatabase.length)];
         choice = `เมนูสุ่ม: ${selected.name}`;
+      } else if (method === 'buy') {
+        const foodType = document.getElementById('food-type').value;
+        const typeMap = {
+          thai: ['หมูทอดกระเทียม', 'ลาบหมู', 'ต้มข่าไก่', 'หมูกรอบคะน้าน้ำมันหอย'],
+          japanese: ['ข้าวหน้าปลาแซลมอน', 'สเต๊กปลาแซลมอน'],
+          fastfood: ['ไก่อบซอส', 'หมูกระเทียมไข่ดาว']
+        };
+        const typeRecipes = typeMap[foodType] || [];
+        if (typeRecipes.length > 0) {
+          const matched = recipeDatabase.filter(r => typeRecipes.includes(r.name));
+          selected = matched[Math.floor(Math.random() * matched.length)];
+          choice = `เมนูจากประเภท ${foodType === 'thai' ? 'อาหารไทย' : foodType === 'japanese' ? 'อาหารญี่ปุ่น' : 'ฟาสต์ฟู้ด'}: ${selected.name}`;
+        } else {
+          choice = 'กรุณาเลือกประเภทอาหารก่อน';
+        }
       } else {
         choice = 'กรุณาเลือกวิธีการหาก่อน';
       }
 
       document.getElementById('recipe-text').innerHTML = `<strong>${choice}</strong>`;
-            document.getElementById('recipe-category').innerHTML = selected?.category ? `<p style='color: #90caf9;'>หมวดหมู่: ${selected.category}</p>` : '';
+      document.getElementById('recipe-category').innerHTML = selected?.category ? `<p style='color: #90caf9;'>หมวดหมู่: ${selected.category}</p>` : '';
       document.getElementById('level-up-sound').play();
       resultBox.classList.remove('hidden');
     }
