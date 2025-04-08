@@ -95,7 +95,7 @@
     const ingredientInputs = document.getElementById('ingredient-inputs');
 
     const recipeDatabase = [
-      { name: 'ปลาแซลมอนย่างซีอิ๊ว', ingredients: ['ปลาแซลมอน', 'ซีอิ๊วขาว', 'กระเทียม'], image: 'https://www.wongnai.com/_next/image?url=https%3A%2F%2Fimg.wongnai.com%2Fp%2F1920x0%2F2021%2F09%2F25%2Fd014dbb8ea584839b1795bde8d2efbfa.jpg&w=1920&q=75', category: 'ย่าง' },
+      { name: 'ปลาแซลมอนย่างซีอิ๊ว', ingredients: ['ปลาแซลมอน', 'ซีอิ๊วขาว', 'กระเทียม'], image: 'https://img.wongnai.com/p/1920x0/2021/09/25/d014dbb8ea584839b1795bde8d2efbfa.jpg', category: 'ย่าง' },
       { name: 'สเต๊กปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'น้ำมันมะกอก', 'เกลือ'], image: 'https://img.kapook.com/u/2021/surauch/cook1/salmonsteak1.jpg', category: 'ย่าง' },
       { name: 'ยำปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'พริก', 'หอมแดง', 'มะนาว'], image: 'https://img.wongnai.com/p/400x0/2020/02/14/4c190887205b4b0882305b1c9c1313df.jpg', category: 'ยำ' },
       { name: 'ปลาดอลลี่นึ่งมะนาว', ingredients: ['ปลาดอลลี่', 'มะนาว', 'พริก', 'กระเทียม'], image: 'https://food.mthai.com/app/uploads/2016/03/pla-dory-neung-manao-600x400.jpg', category: 'นึ่ง' }
@@ -148,9 +148,9 @@
 
       if (method === 'cook') {
         const scoredRecipes = recipeDatabase.map(r => {
-          const matched = r.ingredients.filter(i => ingredients.includes(i)).length;
-          return { ...r, score: matched / r.ingredients.length };
-        }).filter(r => r.score >= 0.5);
+  const matched = r.ingredients.filter(i => ingredients.some(input => i.includes(input) || input.includes(i))).length;
+  return { ...r, score: matched / r.ingredients.length };
+}).filter(r => r.score >= 0.5);
 
         if (scoredRecipes.length > 0) {
           const bestMatches = scoredRecipes.filter(r => r.score === Math.max(...scoredRecipes.map(m => m.score)));
