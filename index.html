@@ -258,6 +258,17 @@
             choice = 'ยังไม่มีเมนูที่ใกล้เคียงกับวัตถุดิบนี้ ลองเปลี่ยนดูนะ';
           }
         }
+      } else if (method === 'random') {
+        const allRecipes = recipeDatabase;
+        const selected = allRecipes[Math.floor(Math.random() * allRecipes.length)];
+        choice = `เมนูสุ่ม: ${selected.name}`;
+        resultBox.innerHTML = `<strong>${choice}</strong>`;
+        if (selected.image) {
+          document.getElementById('recipe-image').innerHTML = `<img src="${selected.image}" alt="${selected.name}" style="max-width: 100%; border-radius: 8px; margin-top: 0.5rem;">`;
+        }
+        if (selected.category) {
+          document.getElementById('recipe-category').innerHTML = `<p style='color: #90caf9;'>หมวดหมู่: ${selected.category}</p>`;
+        }
       } else {
         choice = 'ฟีเจอร์นี้ใช้งานได้ในโหมดทำกินเองเท่านั้นตอนนี้';
       }
