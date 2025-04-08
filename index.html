@@ -82,7 +82,7 @@
   <button onclick="findFood()">สุ่มอาหาร!</button>
   <div id="result" class="random-box hidden">
     <div id="recipe-text"></div>
-    <div id="recipe-image"></div>
+    
     <div id="recipe-category"></div>
   </div>
 
@@ -96,7 +96,7 @@
 
     const recipeDatabase = [
   // ตัวอย่างเมนูจากหมู (30 เมนู)
-  { name: 'หมูทอดกระเทียม', ingredients: ['หมู', 'กระเทียม', 'น้ำปลา'], image: 'https://www.example.com/mootod.jpg', category: 'ทอด' },
+  { name: 'หมูทอดกระเทียม', ingredients: ['หมู', 'กระเทียม', 'น้ำปลา'], category: 'ทอด' },
   { name: 'แกงจืดเต้าหู้หมูสับ', ingredients: ['หมูสับ', 'เต้าหู้', 'ผักกาดขาว'], image: 'https://www.example.com/kangjeud.jpg', category: 'ต้ม' },
   { name: 'หมูผัดพริกแกง', ingredients: ['หมู', 'พริกแกงแดง', 'ถั่วฝักยาว'], image: 'https://www.example.com/moopadprikgaeng.jpg', category: 'ผัด' },
   { name: 'หมูกระเทียมไข่ดาว', ingredients: ['หมู', 'กระเทียม', 'ไข่'], image: 'https://www.example.com/mookai.jpg', category: 'ทอด' },
@@ -121,7 +121,7 @@
   { name: 'ยำปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'พริก', 'หอมแดง', 'มะนาว'], image: 'https://img.wongnai.com/p/400x0/2020/02/14/4c190887205b4b0882305b1c9c1313df.jpg', category: 'ยำ' },
   { name: 'ข้าวหน้าปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'ข้าว', 'ซอสเทอริยากิ'], image: 'https://www.example.com/salmonrice.jpg', category: 'อาหารจานเดียว' },
   // เพิ่มเมนูจากปลาแซลมอน อีก 26 รายการ ...
-];, image: 'https://img.wongnai.com/p/1920x0/2021/09/25/d014dbb8ea584839b1795bde8d2efbfa.jpg', category: 'ย่าง' },
+]
       { name: 'สเต๊กปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'น้ำมันมะกอก', 'เกลือ'], image: 'https://img.kapook.com/u/2021/surauch/cook1/salmonsteak1.jpg', category: 'ย่าง' },
       { name: 'ยำปลาแซลมอน', ingredients: ['ปลาแซลมอน', 'พริก', 'หอมแดง', 'มะนาว'], image: 'https://img.wongnai.com/p/400x0/2020/02/14/4c190887205b4b0882305b1c9c1313df.jpg', category: 'ยำ' },
       { name: 'ปลาดอลลี่นึ่งมะนาว', ingredients: ['ปลาดอลลี่', 'มะนาว', 'พริก', 'กระเทียม'], image: 'https://food.mthai.com/app/uploads/2016/03/pla-dory-neung-manao-600x400.jpg', category: 'นึ่ง' }
@@ -194,8 +194,7 @@
       }
 
       document.getElementById('recipe-text').innerHTML = `<strong>${choice}</strong>`;
-      document.getElementById('recipe-image').innerHTML = selected?.image ? `<img src="${selected.image}" alt="${selected.name}" style="max-width: 100%; border-radius: 8px; margin-top: 0.5rem;">` : '';
-      document.getElementById('recipe-category').innerHTML = selected?.category ? `<p style='color: #90caf9;'>หมวดหมู่: ${selected.category}</p>` : '';
+            document.getElementById('recipe-category').innerHTML = selected?.category ? `<p style='color: #90caf9;'>หมวดหมู่: ${selected.category}</p>` : '';
       resultBox.classList.remove('hidden');
     }
 
