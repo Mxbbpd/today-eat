@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>วันนี้กินอะไรดี?</title>
+  <style>
+    body {
+      background-color: #0a0f2c;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      padding: 2rem;
+    }
+    h1 {
+      color: #4fc3f7;
+    }
+    select, input, button {
+      margin: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
+    }
+    .random-box {
+      margin-top: 2rem;
+      background: #1a237e;
+      padding: 2rem;
+      border-radius: 10px;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #ffeb3b;
+      animation: shake 0.5s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    .hidden { display: none; }
+    .ingredient-inputs input {
+      display: block;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>วันนี้กินอะไรดี?</h1>
+
+  <label for="method">เลือกวิธีหาอาหาร:</label>
+  <select id="method">
+    <option value="">-- เลือก --</option>
+    <option value="cook">ทำกินเอง</option>
+    <option value="buy">ซื้อกิน</option>
+    <option value="random">Random</option>
+  </select>
+
+  <div id="ingredient-section" class="hidden">
+    <p>ใส่วัตถุดิบที่มี:</p>
+    <div class="ingredient-inputs" id="ingredient-inputs">
+      <input type="text" placeholder="วัตถุดิบ 1" />
+    </div>
+    <button onclick="addIngredientInput()">+ เพิ่มวัตถุดิบ</button>
+  </div>
+
+  <div id="foodtype-section" class="hidden">
+    <p>เลือกประเภทอาหาร:</p>
+    <select id="food-type">
+      <option value="">-- เลือกประเภทอาหาร --</option>
+      <option value="thai">อาหารไทย</option>
+      <option value="japanese">อาหารญี่ปุ่น</option>
+      <option value="fastfood">ฟาสต์ฟู้ด</option>
+    </select>
+  </div>
+
+  <button onclick="findFood()">สุ่มอาหาร!</button>
+
+  <div id="result" class="random-box hidden"></div>
+
+  <script>
+    const methodSelect = document.getElementById('method');
+    const ingredientSection = document.getElementById('ingredient-section');
+    const foodtypeSection = document.getElementById('foodtype-section');
+    const resultBox = document.getElementById('result');
+
+    const menus = {
+      thai: ['ผัดกะเพรา', 'แกงเขียวหวาน', 'ต้มยำกุ้ง', 'ข้าวมันไก่', 'ข้าวขาหมู'],
+      japanese: ['ซูชิ', 'ราเมน', 'ข้าวหน้าเนื้อ', 'เทมปุระ', 'ทงคัตสึ'],
+      fastfood: ['เบอร์เกอร์', 'เฟรนช์ฟรายส์', 'ไก่ทอด', 'พิซซ่า', 'แซนด์วิช'],
+      all: [] // will be filled below
+    };
+    menus.all = [...menus.thai, ...menus.japanese, ...menus.fastfood];
+
+    methodSelect.addEventListener('change', () => {
+      const method = methodSelect.value;
+      ingredientSection.classList.toggle('hidden', method !== 'cook');
+      foodtypeSection.classList.toggle('hidden', method !== 'buy');
+    });
+
+    function addIngredientInput() {
+      const container = document.getElementById('ingredient-inputs');
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = `วัตถุดิบ ${container.children.length + 1}`;
+      container.appendChild(input);
+    }
+
+    function findFood() {
+      const method = methodSelect.value;
+      let choice;
+
+      if (method === 'cook') {
+        const ingredients = Array.from(document.querySelectorAll('#ingredient-inputs input'))
+          .map(i => i.value.trim()).filter(Boolean);
+        choice = ingredients.length
+          ? `เมนูจาก: ${ingredients.join(', ')}`
+          : 'ลองใส่วัตถุดิบดูหน่อย!';
+      } else if (method === 'buy') {
+        const type = document.getElementById('food-type').value;
+        if (menus[type]) {
+          const randomItem = menus[type][Math.floor(Math.random() * menus[type].length)];
+          choice = `ไปกิน ${randomItem} กัน!`;
+        } else {
+          choice = 'กรุณาเลือกประเภทอาหาร';
+        }
+      } else {
+        const randomItem = menus.all[Math.floor(Math.random() * menus.all.length)];
+        choice = `ลอง ${randomItem} ดูไหม?`;
+      }
+
+      resultBox.textContent = choice;
+      resultBox.classList.remove('hidden');
+      resultBox.style.animation = 'none';
+      void resultBox.offsetWidth;
+      resultBox.style.animation = '';
+    }
+  </script>
+</body>
+</html>
