@@ -194,6 +194,7 @@
 
       document.getElementById('recipe-text').innerHTML = `<strong>${choice}</strong>`;
             document.getElementById('recipe-category').innerHTML = selected?.category ? `<p style='color: #90caf9;'>หมวดหมู่: ${selected.category}</p>` : '';
+      document.getElementById('level-up-sound').play();'>หมวดหมู่: ${selected.category}</p>` : '';
       resultBox.classList.remove('hidden');
     }
 
@@ -206,5 +207,6 @@
       }
     }
   </script>
+  <audio id="level-up-sound" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c778ec3d62.mp3?filename=level-up-191997.mp3" preload="auto"></audio>
 </body>
 </html>
