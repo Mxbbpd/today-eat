@@ -202,9 +202,23 @@
     } else if (method === 'random') {
       selected = recipeDatabase[Math.floor(Math.random() * recipeDatabase.length)];
       choice = `เมนูสุ่ม: ${selected.name}`;
-    } else {
-      choice = 'กรุณาเลือกวิธีการหาก่อน';
-    }
+    } else if (method === 'buy') {
+  const foodType = document.getElementById('food-type').value;
+  const typeMap = {
+    thai: recipeDatabase.filter(r => r.category === 'แกง' || r.category === 'ต้ม' || r.category === 'ผัด'),
+    japanese: recipeDatabase.filter(r => r.name.includes('เทอริยากิ') || r.name.includes('ข้าวหน้า')),
+    fastfood: recipeDatabase.filter(r => r.category === 'ทอด' || r.category === 'อาหารจานเดียว')
+  };
+  const typeRecipes = typeMap[foodType] || [];
+  if (typeRecipes.length > 0) {
+    selected = typeRecipes[Math.floor(Math.random() * typeRecipes.length)];
+    choice = `เมนูจากประเภท ${foodType === 'thai' ? 'อาหารไทย' : foodType === 'japanese' ? 'อาหารญี่ปุ่น' : 'ฟาสต์ฟู้ด'}: ${selected.name}`;
+  } else {
+    choice = 'กรุณาเลือกประเภทอาหารก่อน';
+  }
+} else {
+  choice = 'กรุณาเลือกวิธีการหาก่อน';
+}
 
     document.getElementById('recipe-text').innerHTML = `<strong>${choice}</strong>`;
     document.getElementById('recipe-category').innerHTML = selected?.category ? `<p>หมวดหมู่: ${selected.category}</p>` : '';
