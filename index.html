@@ -194,11 +194,11 @@
     videoContainer.classList.remove('hidden');
     resultBox.classList.add('hidden');
     document.getElementById('recipe-text').innerHTML = `<strong>🔄 กำลังสุ่ม...</strong>`;
-    document.getElementById('level-up-sound').play();
-    resultBox.classList.remove('hidden');
-    videoContainer.classList.add('hidden');
+    // ซ่อนผลลัพธ์ไว้ก่อน
+    resultBox.classList.add('hidden');
 
     setTimeout(() => {
+    videoContainer.classList.add('hidden');
         videoContainer.classList.add('hidden');
         resultBox.classList.remove('hidden');
       const method = methodSelect.value;
