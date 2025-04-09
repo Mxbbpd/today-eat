@@ -176,12 +176,23 @@
   }
 
   methodSelect.onchange = () => {
-    const method = methodSelect.value;
-    ingredientSection.classList.toggle('hidden', method !== 'cook');
-    foodtypeSection.classList.toggle('hidden', method !== 'buy');
-  };
+  const method = methodSelect.value;
+  ingredientSection.classList.toggle('hidden', method !== 'cook');
+  foodtypeSection.classList.toggle('hidden', method !== 'buy');
+
+  if (method === 'cook' && ingredientInputs.children.length === 0) {
+    addIngredientInput();
+  }
+};
 
   function findFood() {
+  resultBox.classList.add('hidden');
+  document.getElementById('recipe-text').innerHTML = `<strong>🔄 กำลังสุ่ม...</strong>`;
+  resultBox.classList.remove('hidden');
+
+  setTimeout(() => {
+
+    setTimeout(() => {
     const method = methodSelect.value;
     const ingredients = Array.from(document.querySelectorAll('#ingredient-inputs input'))
       .map(i => i.value.trim()).filter(Boolean);
@@ -243,8 +254,9 @@ if (method === 'cook' && selected) {
   }
 }
     document.getElementById('level-up-sound').play();
+    document.getElementById('level-up-sound').play();
     resultBox.classList.remove('hidden');
-  }
+  }, 1000);
 
   window.onload = () => {
     const saved = localStorage.getItem('ingredients');
