@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>วันนี้กินอะไรดี?</title>
   <style>
     body {
@@ -13,40 +13,32 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
     }
     h1 {
       color: #4fc3f7;
-      margin-bottom: 1rem;
       font-size: 2rem;
-      text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+      margin-bottom: 1rem;
     }
     input, select, button {
-      margin: 0.5rem;
-      padding: 0.6rem 1rem;
+      margin: 0.3rem;
+      padding: 0.6rem;
       border-radius: 8px;
       border: none;
       font-size: 1rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      transition: 0.3s;
-    }
-    input, select {
-      width: 250px;
     }
     button {
       background-color: #00bcd4;
-      color: #ffffff;
-      font-weight: bold;
+      color: white;
       cursor: pointer;
     }
     button:hover {
       background-color: #0097a7;
-      transform: scale(1.05);
     }
-    .hidden { display: none; }
     .ingredient-inputs .suggestion-box {
       position: relative;
-      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
     }
     .suggestions {
       position: absolute;
@@ -54,8 +46,6 @@
       width: 100%;
       border-radius: 0 0 5px 5px;
       z-index: 1;
-      max-height: 150px;
-      overflow-y: auto;
     }
     .suggestions div {
       padding: 0.4rem;
@@ -64,32 +54,22 @@
     .suggestions div:hover {
       background: #455a64;
     }
+    .hidden { display: none; }
     .random-box {
-      background: rgba(255, 255, 255, 0.1);
-      margin-top: 1.5rem;
-      padding: 1.2rem;
+      background-color: #1a237e;
+      margin-top: 1rem;
+      padding: 1rem;
       color: #ffeb3b;
       border-radius: 12px;
       box-shadow: 0 0 10px #4fc3f7;
-      min-width: 280px;
-      max-width: 400px;
       text-align: center;
-      animation: shake 0.5s;
-    }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-3px); }
-      75% { transform: translateX(3px); }
-    }
-    #recipe-category {
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-      color: #81d4fa;
+      min-width: 280px;
     }
   </style>
 </head>
 <body>
   <h1>วันนี้กินอะไรดี?</h1>
+
   <label for="method">เลือกวิธีหาอาหาร:</label>
   <select id="method">
     <option value="">-- เลือก --</option>
@@ -97,11 +77,13 @@
     <option value="buy">ซื้อกิน</option>
     <option value="random">Random</option>
   </select>
+
   <div id="ingredient-section" class="hidden">
     <p>ใส่วัตถุดิบที่มี:</p>
     <div class="ingredient-inputs" id="ingredient-inputs"></div>
     <button onclick="addIngredientInput()">+ เพิ่มวัตถุดิบ</button>
   </div>
+
   <div id="foodtype-section" class="hidden">
     <p>เลือกประเภทอาหาร:</p>
     <select id="food-type">
@@ -111,164 +93,144 @@
       <option value="fastfood">ฟาสต์ฟู้ด</option>
     </select>
   </div>
-  <div style="display:flex; gap: 1rem; align-items: center;">
+
+  <div style="margin-top: 1rem;">
     <button onclick="findFood()">🎲 สุ่มอาหาร!</button>
     <button onclick="resetIngredients()">🔄 รีเฟรช</button>
   </div>
+
+  <div id="video-container" class="hidden" style="margin-top: 1rem;">
+    <img id="loading-video" src="20250409_1052_Husky Chef Delight_simple_compose_01jrcav1wsejga9796d3a7z5fm.gif"
+         width="320" height="240" style="border-radius:12px; box-shadow: 0 0 10px #4fc3f7;" />
+  </div>
+
   <div id="result" class="random-box hidden">
     <div id="recipe-text"></div>
     <div id="recipe-category"></div>
   </div>
+
   <audio id="level-up-sound" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c778ec3d62.mp3?filename=level-up-191997.mp3" preload="auto"></audio>
-<script>
-  const methodSelect = document.getElementById('method');
-  const ingredientSection = document.getElementById('ingredient-section');
-  const foodtypeSection = document.getElementById('foodtype-section');
-  const resultBox = document.getElementById('result');
-  const ingredientInputs = document.getElementById('ingredient-inputs');
 
-  const recipeDatabase = [
-    { name: 'ข้าวเนื้อวัวกระเทียม', ingredients: ['เนื้อวัว', 'กระเทียม', 'ซอสหอยนางรม'], category: 'ผัด' },
-    { name: 'แกงเนื้อวัวใส่มะเขือ', ingredients: ['เนื้อวัว', 'พริกแกงแดง', 'มะเขือ'], category: 'แกง' },
-    { name: 'ยำปลาดอลลี่', ingredients: ['ปลาดอลลี่', 'พริก', 'น้ำมะนาว', 'หอมแดง'], category: 'ยำ' },
-    { name: 'ไก่ผัดขิง', ingredients: ['ไก่', 'ขิง', 'ต้นหอม'], category: 'ผัด' },
-    { name: 'ต้มแซ่บไก่', ingredients: ['ไก่', 'ตะไคร้', 'ใบมะกรูด', 'พริก'], category: 'ต้ม' },
-    { name: 'ปลาดอลลี่ทอดกระเทียม', ingredients: ['ปลาดอลลี่', 'กระเทียม', 'น้ำปลา'], category: 'ทอด' },
-    { name: 'ไก่ย่างตะไคร้', ingredients: ['ไก่', 'ตะไคร้', 'ซีอิ๊วขาว'], category: 'ย่าง' },
-    { name: 'ปลาดอลลี่ซอสมะขาม', ingredients: ['ปลาดอลลี่', 'น้ำมะขามเปียก', 'น้ำตาลปี๊บ'], category: 'ทอด' },
-    { name: 'เนื้อวัวผัดน้ำมันหอย', ingredients: ['เนื้อวัว', 'น้ำมันหอย', 'คะน้า'], category: 'ผัด' },
-    { name: 'ข้าวหน้าปลาดอลลี่', ingredients: ['ปลาดอลลี่', 'ข้าว', 'ซอสเทอริยากิ'], category: 'อาหารจานเดียว' }
-  ];
+  <script>
+    const methodSelect = document.getElementById('method');
+    const ingredientSection = document.getElementById('ingredient-section');
+    const foodtypeSection = document.getElementById('foodtype-section');
+    const ingredientInputs = document.getElementById('ingredient-inputs');
+    const resultBox = document.getElementById('result');
+    const videoContainer = document.getElementById('video-container');
 
-  function addIngredientInput(value = '') {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'suggestion-box';
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'วัตถุดิบ';
-    input.value = value;
-    input.oninput = () => suggestIngredients(input);
-    const suggBox = document.createElement('div');
-    suggBox.className = 'suggestions';
-    wrapper.appendChild(input);
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = '❌';
-    deleteBtn.style.marginLeft = '0.5rem';
-    deleteBtn.onclick = () => wrapper.remove();
-    wrapper.appendChild(deleteBtn);
-    wrapper.appendChild(suggBox);
-    ingredientInputs.appendChild(wrapper);
-  }
+    const recipeDatabase = [
+      { name: 'ข้าวเนื้อวัวกระเทียม', ingredients: ['เนื้อวัว', 'กระเทียม', 'ซอสหอยนางรม'], category: 'ผัด' },
+      { name: 'แกงเนื้อวัวใส่มะเขือ', ingredients: ['เนื้อวัว', 'พริกแกงแดง', 'มะเขือ'], category: 'แกง' },
+      { name: 'ยำปลาดอลลี่', ingredients: ['ปลาดอลลี่', 'พริก', 'น้ำมะนาว', 'หอมแดง'], category: 'ยำ' },
+      { name: 'ไก่ผัดขิง', ingredients: ['ไก่', 'ขิง', 'ต้นหอม'], category: 'ผัด' },
+      { name: 'ต้มแซ่บไก่', ingredients: ['ไก่', 'ตะไคร้', 'ใบมะกรูด', 'พริก'], category: 'ต้ม' }
+    ];
 
-  function suggestIngredients(input) {
-    const wrapper = input.parentElement;
-    const suggBox = wrapper.querySelector('.suggestions');
-    const value = input.value.toLowerCase();
-    suggBox.innerHTML = '';
-    if (!value) return;
-    const matches = ['เนื้อวัว', 'ไก่', 'ปลาดอลลี่', 'กระเทียม', 'ขิง', 'ต้นหอม', 'มะเขือ', 'น้ำมะนาว', 'หอมแดง', 'พริก', 'น้ำปลา', 'ตะไคร้', 'ใบมะกรูด', 'น้ำมันหอย', 'คะน้า', 'ซีอิ๊วขาว', 'น้ำมะขามเปียก', 'น้ำตาลปี๊บ', 'ซอสเทอริยากิ', 'ข้าว', 'พริกแกงแดง'].filter(item => item.toLowerCase().includes(value));
-    matches.forEach(match => {
-      const div = document.createElement('div');
-      div.textContent = match;
-      div.onclick = () => { input.value = match; suggBox.innerHTML = ''; };
-      suggBox.appendChild(div);
-    });
-  }
-
-  methodSelect.onchange = () => {
-    const method = methodSelect.value;
-    ingredientSection.classList.toggle('hidden', method !== 'cook');
-    foodtypeSection.classList.toggle('hidden', method !== 'buy');
-    if (method === 'cook' && ingredientInputs.children.length === 0) {
-      addIngredientInput();
+    function addIngredientInput(value = '') {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'suggestion-box';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'วัตถุดิบ';
+      input.value = value;
+      input.oninput = () => suggestIngredients(input);
+      const suggBox = document.createElement('div');
+      suggBox.className = 'suggestions';
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = '❌';
+      deleteBtn.style.marginLeft = '0.5rem';
+      deleteBtn.onclick = () => wrapper.remove();
+      wrapper.appendChild(input);
+      wrapper.appendChild(deleteBtn);
+      wrapper.appendChild(suggBox);
+      ingredientInputs.appendChild(wrapper);
     }
-  };
 
-  function findFood() {
-    resultBox.classList.add('hidden');
-    document.getElementById('recipe-text').innerHTML = `<strong>🔄 กำลังสุ่ม...</strong>`;
-    resultBox.classList.remove('hidden');
+    function suggestIngredients(input) {
+      const wrapper = input.parentElement;
+      const suggBox = wrapper.querySelector('.suggestions');
+      const value = input.value.toLowerCase();
+      suggBox.innerHTML = '';
+      const options = ['เนื้อวัว', 'ไก่', 'ปลาดอลลี่', 'กระเทียม', 'ขิง', 'ต้นหอม', 'มะเขือ', 'น้ำมะนาว', 'หอมแดง', 'พริก'];
+      options.filter(i => i.includes(value)).forEach(match => {
+        const div = document.createElement('div');
+        div.textContent = match;
+        div.onclick = () => { input.value = match; suggBox.innerHTML = ''; };
+        suggBox.appendChild(div);
+      });
+    }
 
-    setTimeout(() => {
+    methodSelect.onchange = () => {
       const method = methodSelect.value;
-      const ingredients = Array.from(document.querySelectorAll('#ingredient-inputs input'))
-        .map(i => i.value.trim()).filter(Boolean);
-      localStorage.setItem('ingredients', JSON.stringify(ingredients));
-
-      let selected = null;
-      let choice = '';
-
-      if (method === 'cook') {
-        const scoredRecipes = recipeDatabase.map(r => {
-          const matchedIngredients = r.ingredients.filter(i => ingredients.some(input => i.includes(input) || input.includes(i)));
-          const totalMatches = matchedIngredients.length;
-          const bonus = matchedIngredients.some(i => ingredients.includes(i)) ? 0.1 : 0;
-          const score = (totalMatches / r.ingredients.length) + bonus;
-          return { ...r, score };
-        }).filter(r => r.score >= 0.2);
-
-        if (scoredRecipes.length > 0) {
-          const bestMatches = scoredRecipes.filter(r => r.score === Math.max(...scoredRecipes.map(m => m.score)));
-          selected = bestMatches[Math.floor(Math.random() * bestMatches.length)];
-          const percent = Math.round(selected.score * 100);
-          choice = `ทำเมนู: ${selected.name} (ความแม่นยำ ${percent}%)`;
-        } else {
-          choice = 'ยังไม่มีเมนูที่ใกล้เคียงกับวัตถุดิบนี้ ลองเปลี่ยนดูนะ';
-        }
-      } else if (method === 'random') {
-        selected = recipeDatabase[Math.floor(Math.random() * recipeDatabase.length)];
-        choice = `เมนูสุ่ม: ${selected.name}`;
-      } else if (method === 'buy') {
-        const foodType = document.getElementById('food-type').value;
-        const typeMap = {
-          thai: recipeDatabase.filter(r => r.category === 'แกง' || r.category === 'ต้ม' || r.category === 'ผัด'),
-          japanese: recipeDatabase.filter(r => r.name.includes('เทอริยากิ') || r.name.includes('ข้าวหน้า')),
-          fastfood: recipeDatabase.filter(r => r.category === 'ทอด' || r.category === 'อาหารจานเดียว')
-        };
-        const typeRecipes = typeMap[foodType] || [];
-        if (typeRecipes.length > 0) {
-          selected = typeRecipes[Math.floor(Math.random() * typeRecipes.length)];
-          choice = `เมนูจากประเภท ${foodType === 'thai' ? 'อาหารไทย' : foodType === 'japanese' ? 'อาหารญี่ปุ่น' : 'ฟาสต์ฟู้ด'}: ${selected.name}`;
-        } else {
-          choice = 'กรุณาเลือกประเภทอาหารก่อน';
-        }
-      } else {
-        choice = 'กรุณาเลือกวิธีการหาก่อน';
+      ingredientSection.classList.toggle('hidden', method !== 'cook');
+      foodtypeSection.classList.toggle('hidden', method !== 'buy');
+      if (method === 'cook' && ingredientInputs.children.length === 0) {
+        addIngredientInput();
       }
+    };
 
-      document.getElementById('recipe-text').innerHTML = `<strong>${choice}</strong>`;
-      document.getElementById('recipe-category').innerHTML = selected?.category ? `<p>หมวดหมู่: ${selected.category}</p>` : '';
+    function findFood() {
+      resultBox.classList.add('hidden');
+      videoContainer.classList.remove('hidden');
 
-      if (method === 'cook' && selected) {
-        const missing = selected.ingredients.filter(i => !ingredients.includes(i));
-        if (missing.length > 0) {
-          const suggestionText = `ลองเพิ่มวัตถุดิบ: <strong>${missing.join(', ')}</strong>`;
-          const suggestionDiv = document.createElement('p');
-          suggestionDiv.style.color = '#90ee90';
-          suggestionDiv.innerHTML = suggestionText;
-          resultBox.appendChild(suggestionDiv);
+      setTimeout(() => {
+        const method = methodSelect.value;
+        const ingredients = Array.from(document.querySelectorAll('#ingredient-inputs input')).map(i => i.value.trim()).filter(Boolean);
+        localStorage.setItem('ingredients', JSON.stringify(ingredients));
+        let selected = null;
+        let choice = '';
+
+        if (method === 'cook') {
+          const scored = recipeDatabase.map(r => {
+            const matched = r.ingredients.filter(i => ingredients.some(j => i.includes(j) || j.includes(i)));
+            const score = matched.length / r.ingredients.length + (matched.some(i => ingredients.includes(i)) ? 0.1 : 0);
+            return { ...r, score };
+          }).filter(r => r.score >= 0.2);
+          if (scored.length > 0) {
+            const best = scored.filter(r => r.score === Math.max(...scored.map(x => x.score)));
+            selected = best[Math.floor(Math.random() * best.length)];
+            const percent = Math.round(selected.score * 100);
+            choice = `ทำเมนู: ${selected.name} (ความแม่นยำ ${percent}%)`;
+          } else {
+            choice = 'ยังไม่มีเมนูที่ใกล้เคียงกับวัตถุดิบนี้';
+          }
+        } else if (method === 'buy') {
+          const type = document.getElementById('food-type').value;
+          const byType = {
+            thai: recipeDatabase.filter(r => r.category === 'แกง' || r.category === 'ต้ม' || r.category === 'ผัด'),
+            japanese: recipeDatabase.filter(r => r.name.includes('ซูชิ') || r.name.includes('ข้าวหน้า')),
+            fastfood: recipeDatabase.filter(r => r.category === 'ทอด' || r.category === 'จานด่วน')
+          }[type] || [];
+          selected = byType[Math.floor(Math.random() * byType.length)];
+          choice = selected ? `เมนูจากประเภท ${type}: ${selected.name}` : 'กรุณาเลือกประเภทอาหารก่อน';
+        } else {
+          selected = recipeDatabase[Math.floor(Math.random() * recipeDatabase.length)];
+          choice = `เมนูสุ่ม: ${selected.name}`;
         }
-      }
 
-      document.getElementById('level-up-sound').play();
-      resultBox.classList.remove('hidden');
-    }, 1000);
-  }
+        document.getElementById('recipe-text').innerHTML = `<strong>${choice}</strong>`;
+        document.getElementById('recipe-category').innerHTML = selected?.category ? `<p>หมวดหมู่: ${selected.category}</p>` : '';
+        document.getElementById('level-up-sound').play();
+        videoContainer.classList.add('hidden');
+        resultBox.classList.remove('hidden');
+      }, 1000);
+    }
 
-  function resetIngredients() {
-    ingredientInputs.innerHTML = '';
-    localStorage.removeItem('ingredients');
-    addIngredientInput();
-  }
-
-  window.onload = () => {
-    const saved = localStorage.getItem('ingredients');
-    if (saved) {
-      JSON.parse(saved).forEach(v => addIngredientInput(v));
-    } else {
+    function resetIngredients() {
+      ingredientInputs.innerHTML = '';
+      localStorage.removeItem('ingredients');
       addIngredientInput();
     }
-  }
-</script>
+
+    window.onload = () => {
+      const saved = localStorage.getItem('ingredients');
+      if (saved) {
+        JSON.parse(saved).forEach(v => addIngredientInput(v));
+      } else {
+        addIngredientInput();
+      }
+    };
+  </script>
 </body>
 </html>
