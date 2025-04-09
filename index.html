@@ -176,95 +176,83 @@
   }
 
   methodSelect.onchange = () => {
-  const method = methodSelect.value;
-  ingredientSection.classList.toggle('hidden', method !== 'cook');
-  foodtypeSection.classList.toggle('hidden', method !== 'buy');
-
-  if (method === 'cook' && ingredientInputs.children.length === 0) {
-    addIngredientInput();
-  }
-};
-
-  function findFood() {
-  resultBox.classList.add('hidden');
-  document.getElementById('recipe-text').innerHTML = `<strong>🔄 กำลังสุ่ม...</strong>`;
-  resultBox.classList.remove('hidden');
-
-  setTimeout(() => {
-
-    setTimeout(() => {
     const method = methodSelect.value;
-    const ingredients = Array.from(document.querySelectorAll('#ingredient-inputs input'))
-      .map(i => i.value.trim()).filter(Boolean);
-    localStorage.setItem('ingredients', JSON.stringify(ingredients));
-
-    let selected = null;
-    let choice = '';
-
-    if (method === 'cook') {
-      const scoredRecipes = recipeDatabase.map(r => {
-  const matchedIngredients = r.ingredients.filter(i => ingredients.some(input => i.includes(input) || input.includes(i)));
-  const totalMatches = matchedIngredients.length;
-  const bonus = matchedIngredients.some(i => ingredients.includes(i)) ? 0.1 : 0;
-  const score = (totalMatches / r.ingredients.length) + bonus;
-  return { ...r, score };
-}).filter(r => r.score >= 0.2);
-
-      if (scoredRecipes.length > 0) {
-        const bestMatches = scoredRecipes.filter(r => r.score === Math.max(...scoredRecipes.map(m => m.score)));
-        selected = bestMatches[Math.floor(Math.random() * bestMatches.length)];
-        const percent = Math.round(selected.score * 100);
-        choice = `ทำเมนู: ${selected.name} (ความแม่นยำ ${percent}%)`;
-      } else {
-        choice = 'ยังไม่มีเมนูที่ใกล้เคียงกับวัตถุดิบนี้ ลองเปลี่ยนดูนะ';
-      }
-    } else if (method === 'random') {
-      selected = recipeDatabase[Math.floor(Math.random() * recipeDatabase.length)];
-      choice = `เมนูสุ่ม: ${selected.name}`;
-    } else if (method === 'buy') {
-  const foodType = document.getElementById('food-type').value;
-  const typeMap = {
-    thai: recipeDatabase.filter(r => r.category === 'แกง' || r.category === 'ต้ม' || r.category === 'ผัด'),
-    japanese: recipeDatabase.filter(r => r.name.includes('เทอริยากิ') || r.name.includes('ข้าวหน้า')),
-    fastfood: recipeDatabase.filter(r => r.category === 'ทอด' || r.category === 'อาหารจานเดียว')
-  };
-  const typeRecipes = typeMap[foodType] || [];
-  if (typeRecipes.length > 0) {
-    selected = typeRecipes[Math.floor(Math.random() * typeRecipes.length)];
-    choice = `เมนูจากประเภท ${foodType === 'thai' ? 'อาหารไทย' : foodType === 'japanese' ? 'อาหารญี่ปุ่น' : 'ฟาสต์ฟู้ด'}: ${selected.name}`;
-  } else {
-    choice = 'กรุณาเลือกประเภทอาหารก่อน';
-  }
-} else {
-  choice = 'กรุณาเลือกวิธีการหาก่อน';
-}
-
-    document.getElementById('recipe-text').innerHTML = `<strong>${choice}</strong>`;
-    document.getElementById('recipe-category').innerHTML = selected?.category ? `<p>หมวดหมู่: ${selected.category}</p>` : '';
-
-// แนะนำวัตถุดิบเพิ่มเติม
-if (method === 'cook' && selected) {
-  const missing = selected.ingredients.filter(i => !ingredients.includes(i));
-  if (missing.length > 0) {
-    const suggestionText = `ลองเพิ่มวัตถุดิบ: <strong>${missing.join(', ')}</strong>`;
-    const suggestionDiv = document.createElement('p');
-    suggestionDiv.style.color = '#90ee90';
-    suggestionDiv.innerHTML = suggestionText;
-    resultBox.appendChild(suggestionDiv);
-  }
-}
-    document.getElementById('level-up-sound').play();
-    document.getElementById('level-up-sound').play();
-    resultBox.classList.remove('hidden');
-  }, 1000);
-
-  window.onload = () => {
-    const saved = localStorage.getItem('ingredients');
-    if (saved) {
-      JSON.parse(saved).forEach(v => addIngredientInput(v));
-    } else {
+    ingredientSection.classList.toggle('hidden', method !== 'cook');
+    foodtypeSection.classList.toggle('hidden', method !== 'buy');
+    if (method === 'cook' && ingredientInputs.children.length === 0) {
       addIngredientInput();
     }
+  };
+
+  function findFood() {
+    resultBox.classList.add('hidden');
+    document.getElementById('recipe-text').innerHTML = `<strong>🔄 กำลังสุ่ม...</strong>`;
+    resultBox.classList.remove('hidden');
+
+    setTimeout(() => {
+      const method = methodSelect.value;
+      const ingredients = Array.from(document.querySelectorAll('#ingredient-inputs input'))
+        .map(i => i.value.trim()).filter(Boolean);
+      localStorage.setItem('ingredients', JSON.stringify(ingredients));
+
+      let selected = null;
+      let choice = '';
+
+      if (method === 'cook') {
+        const scoredRecipes = recipeDatabase.map(r => {
+          const matchedIngredients = r.ingredients.filter(i => ingredients.some(input => i.includes(input) || input.includes(i)));
+          const totalMatches = matchedIngredients.length;
+          const bonus = matchedIngredients.some(i => ingredients.includes(i)) ? 0.1 : 0;
+          const score = (totalMatches / r.ingredients.length) + bonus;
+          return { ...r, score };
+        }).filter(r => r.score >= 0.2);
+
+        if (scoredRecipes.length > 0) {
+          const bestMatches = scoredRecipes.filter(r => r.score === Math.max(...scoredRecipes.map(m => m.score)));
+          selected = bestMatches[Math.floor(Math.random() * bestMatches.length)];
+          const percent = Math.round(selected.score * 100);
+          choice = `ทำเมนู: ${selected.name} (ความแม่นยำ ${percent}%)`;
+        } else {
+          choice = 'ยังไม่มีเมนูที่ใกล้เคียงกับวัตถุดิบนี้ ลองเปลี่ยนดูนะ';
+        }
+      } else if (method === 'random') {
+        selected = recipeDatabase[Math.floor(Math.random() * recipeDatabase.length)];
+        choice = `เมนูสุ่ม: ${selected.name}`;
+      } else if (method === 'buy') {
+        const foodType = document.getElementById('food-type').value;
+        const typeMap = {
+          thai: recipeDatabase.filter(r => r.category === 'แกง' || r.category === 'ต้ม' || r.category === 'ผัด'),
+          japanese: recipeDatabase.filter(r => r.name.includes('เทอริยากิ') || r.name.includes('ข้าวหน้า')),
+          fastfood: recipeDatabase.filter(r => r.category === 'ทอด' || r.category === 'อาหารจานเดียว')
+        };
+        const typeRecipes = typeMap[foodType] || [];
+        if (typeRecipes.length > 0) {
+          selected = typeRecipes[Math.floor(Math.random() * typeRecipes.length)];
+          choice = `เมนูจากประเภท ${foodType === 'thai' ? 'อาหารไทย' : foodType === 'japanese' ? 'อาหารญี่ปุ่น' : 'ฟาสต์ฟู้ด'}: ${selected.name}`;
+        } else {
+          choice = 'กรุณาเลือกประเภทอาหารก่อน';
+        }
+      } else {
+        choice = 'กรุณาเลือกวิธีการหาก่อน';
+      }
+
+      document.getElementById('recipe-text').innerHTML = `<strong>${choice}</strong>`;
+      document.getElementById('recipe-category').innerHTML = selected?.category ? `<p>หมวดหมู่: ${selected.category}</p>` : '';
+
+      if (method === 'cook' && selected) {
+        const missing = selected.ingredients.filter(i => !ingredients.includes(i));
+        if (missing.length > 0) {
+          const suggestionText = `ลองเพิ่มวัตถุดิบ: <strong>${missing.join(', ')}</strong>`;
+          const suggestionDiv = document.createElement('p');
+          suggestionDiv.style.color = '#90ee90';
+          suggestionDiv.innerHTML = suggestionText;
+          resultBox.appendChild(suggestionDiv);
+        }
+      }
+
+      document.getElementById('level-up-sound').play();
+      resultBox.classList.remove('hidden');
+    }, 1000);
   }
 
   function resetIngredients() {
@@ -272,6 +260,13 @@ if (method === 'cook' && selected) {
     localStorage.removeItem('ingredients');
     addIngredientInput();
   }
+
+  window.onload = () => {
+    const saved = localStorage.getItem('ingredients');
+    if (saved) {
+      JSON.parse(saved).forEach(v => addIngredientInput(v));
+    } else {
+      addIngredientInput();
     }
   }
 </script>
