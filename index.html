@@ -184,9 +184,12 @@
 
     if (method === 'cook') {
       const scoredRecipes = recipeDatabase.map(r => {
-        const matched = r.ingredients.filter(i => ingredients.some(input => i.includes(input) || input.includes(i))).length;
-        return { ...r, score: matched / r.ingredients.length };
-      }).filter(r => r.score > 0);
+  const matchedIngredients = r.ingredients.filter(i => ingredients.some(input => i.includes(input) || input.includes(i)));
+  const totalMatches = matchedIngredients.length;
+  const bonus = matchedIngredients.some(i => ingredients.includes(i)) ? 0.1 : 0;
+  const score = (totalMatches / r.ingredients.length) + bonus;
+  return { ...r, score };
+}).filter(r => r.score >= 0.2);
 
       if (scoredRecipes.length > 0) {
         const bestMatches = scoredRecipes.filter(r => r.score === Math.max(...scoredRecipes.map(m => m.score)));
@@ -205,6 +208,18 @@
 
     document.getElementById('recipe-text').innerHTML = `<strong>${choice}</strong>`;
     document.getElementById('recipe-category').innerHTML = selected?.category ? `<p>หมวดหมู่: ${selected.category}</p>` : '';
+
+// แนะนำวัตถุดิบเพิ่มเติม
+if (method === 'cook' && selected) {
+  const missing = selected.ingredients.filter(i => !ingredients.includes(i));
+  if (missing.length > 0) {
+    const suggestionText = `ลองเพิ่มวัตถุดิบ: <strong>${missing.join(', ')}</strong>`;
+    const suggestionDiv = document.createElement('p');
+    suggestionDiv.style.color = '#90ee90';
+    suggestionDiv.innerHTML = suggestionText;
+    resultBox.appendChild(suggestionDiv);
+  }
+}
     document.getElementById('level-up-sound').play();
     resultBox.classList.remove('hidden');
   }
